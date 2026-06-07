@@ -5,28 +5,28 @@
 
 using namespace std;
 
-// Definimos el número de nodos del grafo (fijo para facilitar el gráfico ASCII)
+// Definimos el nÃºmero de nodos del grafo (fijo para facilitar el grÃ¡fico ASCII)
 #define NODOS 5
 #define INF INT_MAX
 
-// Función auxiliar para imprimir el Grafo Visual en la consola (Puntos Extras)
+// FunciÃ³n auxiliar para imprimir el Grafo Visual en la consola (Puntos Extras)
 void dibujarGrafoVisual(int nodoActual, int distancias[], bool visitados[]) {
-    // Limpia la pantalla para crear efecto de animación en Dev-C++
+    // Limpia la pantalla para crear efecto de animaciÃ³n en Dev-C++
     #ifdef _WIN32
         system("cls");
     #else
         system("clear");
     #endif
 
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
     cout << "        SIMULADOR GRAFICO DEL ALGORITMO DE DIJKSTRA       " << endl;
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
     cout << " Nodo Actual: ";
     if (nodoActual == -1) cout << "NINGUNO (Inicio)";
     else cout << (char)('A' + nodoActual);
     cout << endl << endl;
 
-    // Dibujo del mapa de red (Arte ASCII dinámico)
+    // Dibujo del mapa de red (Arte ASCII dinÃ¡mico)
     // Cambia de color conceptualmente o marca con '*' si el nodo ya fue visitado
     cout << "       ( B ) [Dist: "; 
     if(distancias[1] == INF) cout << "INF"; else cout << distancias[1];
@@ -50,10 +50,10 @@ void dibujarGrafoVisual(int nodoActual, int distancias[], bool visitados[]) {
     
     cout << "  [Dist: "; if(distancias[3] == INF) cout << "INF"; else cout << distancias[3];
     cout << "]" << (visitados[3] ? " *VISITADO*" : "") << endl;
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
 }
 
-// Función para mostrar la tabla de estados paso a paso
+// FunciÃ³n para mostrar la tabla de estados paso a paso
 void mostrarTablaPasos(int distancias[], bool visitados[]) {
     cout << "\nTabla de distancias acumuladas actuales:\n";
     cout << "Nodo:\t\tA\tB\tC\tD\tE\n";
@@ -68,10 +68,10 @@ void mostrarTablaPasos(int distancias[], bool visitados[]) {
     }
     cout << "\n---------------------------------------------------------\n";
     cout << "Presione ENTER para continuar al siguiente paso...";
-    cin.get(); // Pausa el flujo para observar la simulación paso a paso
+    cin.get(); // Pausa el flujo para observar la simulaciÃ³n paso a paso
 }
 
-// Encuentra el nodo con la distancia mínima que aún no ha sido visitado
+// Encuentra el nodo con la distancia mÃ­nima que aÃºn no ha sido visitado
 int minDistancia(int distancias[], bool visitados[]) {
     int minimo = INF, indiceMinimo = -1;
     for (int v = 0; v < NODOS; v++) {
@@ -83,40 +83,40 @@ int minDistancia(int distancias[], bool visitados[]) {
     return indiceMinimo;
 }
 
-// Implementación del Algoritmo de Dijkstra con simulación integrada
+// ImplementaciÃ³n del Algoritmo de Dijkstra con simulaciÃ³n integrada
 void dijkstraSimulador(int grafo[NODOS][NODOS], int origen) {
     int distancias[NODOS];
     bool visitados[NODOS];
 
-    // Inicialización clásica en C++98
+    // InicializaciÃ³n clÃ¡sica en C++98
     for (int i = 0; i < NODOS; i++) {
         distancias[i] = INF;
         visitados[i] = false;
     }
 
-    // La distancia desde el origen a sí mismo siempre es 0
+    // La distancia desde el origen a sÃ­ mismo siempre es 0
     distancias[origen] = 0;
 
     // Mostrar estado inicial de arranque
     dibujarGrafoVisual(-1, distancias, visitados);
     mostrarTablaPasos(distancias, visitados);
 
-    // Ciclo principal del algoritmo para recorrer todos los vértices
+    // Ciclo principal del algoritmo para recorrer todos los vÃ©rtices
     for (int count = 0; count < NODOS - 1; count++) {
-        // Seleccionar el vértice de menor distancia
+        // Seleccionar el vÃ©rtice de menor distancia
         int u = minDistancia(distancias, visitados);
         if (u == -1) break; // Si ya no hay nodos alcanzables, termina
 
         // Marcar el nodo seleccionado como procesado (visitado)
         visitados[u] = true;
 
-        // Actualizar la vista del simulador gráfico
+        // Actualizar la vista del simulador grÃ¡fico
         dibujarGrafoVisual(u, distancias, visitados);
         cout << ">> Evaluando los vecinos del nodo " << (char)('A' + u) << "..." << endl;
 
         // Actualizar el valor de la distancia de los nodos vecinos del nodo seleccionado
         for (int v = 0; v < NODOS; v++) {
-            // Si el nodo v no está visitado, hay una conexión real, y la ruta a través de u es más corta
+            // Si el nodo v no estÃ¡ visitado, hay una conexiÃ³n real, y la ruta a travÃ©s de u es mÃ¡s corta
             if (!visitados[v] && grafo[u][v] != 0 && distancias[u] != INF 
                 && distancias[u] + grafo[u][v] < distancias[v]) {
                 
@@ -126,25 +126,25 @@ void dijkstraSimulador(int grafo[NODOS][NODOS], int origen) {
             }
         }
         
-        // Pausar y mostrar los resultados consolidados de esta iteración
+        // Pausar y mostrar los resultados consolidados de esta iteraciÃ³n
         mostrarTablaPasos(distancias, visitados);
     }
 
-    // Dibujo estático final con los resultados consolidados definitivos
+    // Dibujo estÃ¡tico final con los resultados consolidados definitivos
     dibujarGrafoVisual(-1, distancias, visitados);
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
     cout << "           SIMULACION COMPLETA - RUTA OPTIMA             " << endl;
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
     cout << "Rutas mas cortas definitivas desde el Nodo A:" << endl;
     for (int i = 0; i < NODOS; i++) {
         cout << "  Distancia hasta el Nodo " << (char)('A' + i) << " = " << distancias[i] << endl;
     }
-    cout << "=========================================================" << endl;
+    cout << "---------------------------------------------------------" << endl;
 }
 
 int main() {
-    // Definimos la matriz de adyacencia del grafo para la simulación
-    // Los números representan los pesos (costos/kilómetros) entre los nodos. 0 significa que no hay conexión directa.
+    // Definimos la matriz de adyacencia del grafo para la simulaciÃ³n
+    // Los nÃºmeros representan los pesos (costos/kilÃ³metros) entre los nodos. 0 significa que no hay conexiÃ³n directa.
     // Nodos mapeados: 0=A, 1=B, 2=C, 3=D, 4=E
     int grafo[NODOS][NODOS] = {
         {0, 4, 3, 1, 0},  // Conexiones desde A
